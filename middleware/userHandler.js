@@ -14,7 +14,29 @@ const validateUserEmail = (req, res, next) => {
 
     }
 }
+const validateUserPassword = (req, res, next) => {
+    const body = req.body;
+    if (body.password && !body.newpassword) {
+        if (/^(?=.{10,})(?=.*[a-z])(?=.*[A-Z])(?=.*[¬!"£$%^&*()_+=\-`{}:@~#';<>?/.,|\\]).*$/.test(body.password)) {
+            next();
+        } else {
+            next(HttpError(400, { message: messageapp.password_invalid_format }))
+        }
+
+    }
+    else if (body.password && body.newpassword) {
+        if (/^(?=.{10,})(?=.*[a-z])(?=.*[A-Z])(?=.*[¬!"£$%^&*()_+=\-`{}:@~#';<>?/.,|\\]).*$/.test(body.newpassword)) {
+            next();
+        } else {
+            next(HttpError(400, { message: messageapp.password_invalid_format }))
+        }
+    }
+
+}
+
+
 
 export default {
-    validateUserEmail
+    validateUserEmail,
+    validateUserPassword
 };

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 
-const encryptPassword =  (req, res, next) => {
+const encryptPassword = (req, res, next) => {
     try {
         const saltRounds = 10;
         console.log(`---> encryptPassword ${req.body.password}`);
@@ -12,12 +12,25 @@ const encryptPassword =  (req, res, next) => {
         next(error);
     }
 }
+const encryptNewPassword = (req, res, next) => {
+    try {
+        const saltRounds = 10;
+        console.log(`---> encryptNewPassword ${req.body.newpassword}`);
+        const passwordHash = bcrypt.hashSync(req.body.newpassword, saltRounds);
+        req.body.newpassword = passwordHash;
+        console.log(`---> encryptNewPassword ${req.body.newpassword}`);
+        next();
+    } catch (error) {
+        next(error);
+    }
+}
 
 
-const encryptPasswordTest = ()=>{ console.log("Test encryptPasswordTest")}
+const encryptPasswordTest = () => { console.log("Test encryptPasswordTest") }
 
 
-export default { 
+export default {
     encryptPassword,
+    encryptNewPassword,
     encryptPasswordTest
 };
